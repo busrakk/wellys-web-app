@@ -4,6 +4,8 @@ import {
   Route,
   Routes,
 } from "react-router-dom";
+import Login from "./layouts/auth/Login";
+import Register from "./layouts/auth/Register";
 import Master from "./layouts/frontend/Master";
 import Home from "./components/frontend/sections/Home";
 import Page404 from "./layouts/error/Page404";
@@ -13,6 +15,8 @@ function App() {
     <>
       <Router>
         <Routes>
+        <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
           <Route path="/" element={<Master />}>
             <Route path="" element={<Home />} />
           </Route>
