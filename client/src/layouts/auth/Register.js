@@ -1,5 +1,5 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import Logo from "../../components/elements/Logo";
 import { HiOutlineUserAdd } from "react-icons/hi";
 import { AiOutlineLock } from "react-icons/ai";
@@ -11,10 +11,42 @@ import AuthCarousel from "../../components/auth/AuthCarousel";
 import slider1 from "../../assets/images/slider1.png";
 import slider2 from "../../assets/images/slider2.png";
 import slider3 from "../../assets/images/slider3.png";
+import toast, { Toaster } from "react-hot-toast";
+import axios from "axios";
 
 const Register = () => {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+
+  //form function
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await axios.post(
+        `${process.env.REACT_APP_BACKEND_ROOT_URL}/api/auth/register`,
+        {
+          name,
+          email,
+          password,
+        }
+      );
+      if (res && res.data.success) {
+        toast.success(res.data && res.data.message);
+        navigate("/login");
+      } else {
+        toast.error(res.data.message);
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("Something went wrong");
+    }
+  };
+
   return (
     <div className="h-screen xl:mx-48">
+      <Toaster />
       <div className="flex justify-between h-full">
         <div className="xl:w-1/3 lg:w-2/5 md:w-1/2 md:flex hidden  h-full">
           <div className="w-full h-full flex items-center">
@@ -45,7 +77,7 @@ const Register = () => {
                 Welly’s giriş yap veya hesap oluştur, yemekleri keşfet!
               </div>
               <div className="rounded-md bg-white w-full max-w-sm sm:max-w-md border border-gray-200 shadow-md px-4 py-4 sm:p-8">
-                <form>
+                <form onSubmit={handleSubmit}>
                   <div className="flex flex-col mb-4">
                     <label
                       htmlFor="name"
@@ -65,6 +97,8 @@ const Register = () => {
                         className="text-sm sm:text-base placeholder-gray-500 pl-10 pr-4 rounded-lg border border-gray-400 w-full py-2 focus:outline-none focus:border-indigo-400"
                         placeholder="İsim"
                         required
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
                       />
                     </div>
                   </div>
@@ -87,6 +121,8 @@ const Register = () => {
                         className="text-sm sm:text-base placeholder-gray-500 pl-10 pr-4 rounded-lg border border-gray-400 w-full py-2 focus:outline-none focus:border-indigo-400"
                         placeholder="E-Posta Adresi"
                         required
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
                       />
                     </div>
                   </div>
@@ -112,6 +148,8 @@ const Register = () => {
                         placeholder="Şifre"
                         required
                         autoComplete="on"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
                       />
                     </div>
                   </div>
