@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import Logo from "../../components/elements/Logo";
 import { HiOutlineUserAdd } from "react-icons/hi";
 import { AiOutlineLock } from "react-icons/ai";
@@ -19,6 +19,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [auth, setAuth] = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
 
   //form function
   const handleSubmit = async (e) => {
@@ -39,7 +40,12 @@ const Login = () => {
           token: res.data.token,
         });
         localStorage.setItem("auth", JSON.stringify(res.data));
-        navigate("/");
+        navigate(location.state || "/admin/dashboard");
+        // navigate(
+        //   location.state || res?.data?.user?.role === 1
+        //     ? "/admin/dashboard"
+        //     : "/"
+        // );
       } else {
         toast.error(res.data.message);
       }
