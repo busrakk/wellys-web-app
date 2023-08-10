@@ -12,10 +12,12 @@ import slider2 from "../../assets/images/slider2.png";
 import slider3 from "../../assets/images/slider3.png";
 import toast, { Toaster } from "react-hot-toast";
 import axios from "axios";
+import { useAuth } from "../../context/auth";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [auth, setAuth] = useAuth();
   const navigate = useNavigate();
 
   //form function
@@ -31,6 +33,12 @@ const Login = () => {
       );
       if (res && res.data.success) {
         toast.success(res.data && res.data.message);
+        setAuth({
+          ...auth,
+          user: res.data.user,
+          token: res.data.token,
+        });
+        localStorage.setItem("auth", JSON.stringify(res.data));
         navigate("/");
       } else {
         toast.error(res.data.message);
