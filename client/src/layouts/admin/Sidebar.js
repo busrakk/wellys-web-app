@@ -4,6 +4,7 @@ import { BiHomeAlt, BiUser, BiCategory } from "react-icons/bi";
 import { FiSettings } from "react-icons/fi";
 import { MdOutlineFastfood } from "react-icons/md";
 import { BsPeople } from "react-icons/bs";
+import { CgWebsite } from "react-icons/cg";
 
 const Sidebar = () => {
   return (
@@ -94,6 +95,19 @@ const Sidebar = () => {
               </span>
               <span className="ml-2 text-sm tracking-wide truncate">
                 Ayarlar
+              </span>
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/"
+              className="relative flex flex-row items-center h-11 focus:outline-none hover:bg-indigo-600 text-white-600 hover:text-white border-l-4 border-transparent hover:border-indigo-500 pr-6"
+            >
+              <span className="inline-flex justify-center items-center ml-4">
+                <CgWebsite size={24} className="w-5 h-5" />
+              </span>
+              <span className="ml-2 text-sm tracking-wide truncate">
+                Wellys
               </span>
             </Link>
           </li>
