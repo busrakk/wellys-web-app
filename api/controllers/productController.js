@@ -33,7 +33,7 @@ export const getProductController = async (req, res) => {
 export const getFeaturedProductController = async (req, res) => {
   try {
     const products = await productModel
-      .find({ featured: "active" })
+      .find({ featured: 1 })
       .populate("category")
       .select("-photo")
       .limit(12)

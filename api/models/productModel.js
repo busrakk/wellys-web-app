@@ -30,13 +30,13 @@ const productSchema = new mongoose.Schema(
     },
     featured: {
       type: String,
-      enum: ["active", "inactive"],
-      default: "inactive",
+      required: true,
+      default: 0,
     },
     status: {
       type: String,
-      enum: ["active", "inactive"],
-      default: "active",
+      required: true,
+      default: 1,
     },
   },
   { timestamps: true }
