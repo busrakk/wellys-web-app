@@ -4,9 +4,12 @@ import { MdAddCircleOutline } from "react-icons/md";
 import toast from "react-hot-toast";
 import axios from "axios";
 import Form from "./Form";
+import Update from "./Update";
+import Swal from "sweetalert2";
 
 const Product = () => {
   const [products, setProducts] = useState([]);
+  const [selectedProductId, setSelectedProductId] = useState(null);
   const [categories, setCategories] = useState([]);
   const [name, setName] = useState("");
   const [category, setCategory] = useState("");
@@ -17,6 +20,7 @@ const Product = () => {
   const [status, setStatus] = useState("1");
   const [isLoading, setIsLoading] = useState(true);
   const [show, setShow] = useState(false);
+  const [showUpdate, setShowUpdate] = useState(false);
 
   useEffect(() => {
     getAllProducts();
@@ -31,7 +35,7 @@ const Product = () => {
       );
       if (data.success) {
         setIsLoading(false);
-        setCategories(data.category);
+        setCategories(data?.category);
       }
     } catch (error) {
       console.log(error);
@@ -85,6 +89,56 @@ const Product = () => {
     }
   };
 
+  const handleEdit = (productId) => {
+    const selectedProduct = products.find((item) => item._id === productId);
+    if (selectedProduct) {
+      setSelectedProductId(productId);
+      setName(selectedProduct.name);
+      setDescription(selectedProduct.description);
+      setPrice(selectedProduct.price);
+      setPhoto(selectedProduct.photo);
+      setCategory(selectedProduct.category._id);
+      setFeatured(selectedProduct.featured === "1" ? "1" : "0");
+      setStatus(selectedProduct.status === "1" ? "1" : "0");
+      setShowUpdate(true);
+    }
+  };
+
+  // update product
+  const handleUpdate = async (e) => {
+    e.preventDefault();
+    try {
+      const productData = new FormData();
+      productData.append("name", name);
+      productData.append("description", description);
+      productData.append("price", price);
+      if (photo) {
+        productData.append("photo", photo);
+      }
+      productData.append("category", category);
+      productData.append("featured", featured);
+      productData.append("status", status);
+
+      const { data } = await axios.put(
+        `${process.env.REACT_APP_BACKEND_ROOT_URL}/api/product/update-product/${selectedProductId}`,
+        productData
+      );
+
+      if (data?.success) {
+        setShowUpdate(false);
+        toast.success(`${name} is successfully updated`);
+        resetForm();
+        getAllProducts();
+      } else {
+        toast.error(data?.message);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("Something went wrong while updating");
+    }
+  };
+
+  // reset form
   const resetForm = () => {
     setName("");
     setStatus("");
@@ -93,6 +147,38 @@ const Product = () => {
     setFeatured("");
     setPhoto("");
     setPrice("");
+  };
+
+  //delete product
+  const handleDelete = async (productId) => {
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, delete it!",
+      cancelButtonText: "Cancel",
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      reverseButtons: true,
+    });
+
+    if (result.isConfirmed) {
+      try {
+        const { data } = await axios.delete(
+          `${process.env.REACT_APP_BACKEND_ROOT_URL}/api/product/delete-product/${productId}`
+        );
+
+        if (data?.success) {
+          toast.success("Product deleted successfully");
+          getAllProducts();
+        } else {
+          toast.error(data?.message || "Something went wrong");
+        }
+      } catch (error) {
+        console.log(error);
+        toast.error("Something went wrong");
+      }
+    }
   };
 
   const renderTableData = () => {
@@ -132,14 +218,14 @@ const Product = () => {
             </div>
 
             <button
-              //onClick={() => handleModal(true, item.id)}
+              onClick={() => handleEdit(item._id)}
               className="w-full px-2 py-2 mt-4 text-sm font-medium tracking-wide text-white capitalize bg-blue-600 rounded-md sm:mt-0 sm:w-1/2 sm:mx-2 hover:bg-blue-500 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
             >
               Düzenle
             </button>
 
             <button
-              //onClick={(e) => handleDelete(e, item.id)}
+              onClick={() => handleDelete(item._id)}
               className="w-full px-2 py-2 mt-4 text-sm font-medium tracking-wide text-white capitalize bg-red-600 rounded-md sm:mt-0 sm:w-1/2 sm:mx-2 hover:bg-red-500 focus:outline-none focus:ring focus:ring-red-300 focus:ring-opacity-40"
             >
               Sil
@@ -189,6 +275,31 @@ const Product = () => {
           isLoading={isLoading}
           handleSubmit={handleSubmit}
           button="Ekle"
+        />
+      )}
+
+      {showUpdate && (
+        <Update
+          setShow={setShowUpdate}
+          categories={categories}
+          setCategory={setCategory}
+          category={category}
+          photo={photo}
+          setPhoto={setPhoto}
+          name={name}
+          setName={setName}
+          description={description}
+          setDescription={setDescription}
+          price={price}
+          setPrice={setPrice}
+          status={status}
+          setStatus={setStatus}
+          featured={featured}
+          setFeatured={setFeatured}
+          isLoading={isLoading}
+          handleSubmit={handleUpdate}
+          productId={selectedProductId}
+          button="Güncelle"
         />
       )}
 

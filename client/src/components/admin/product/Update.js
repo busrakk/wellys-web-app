@@ -2,7 +2,8 @@ import React from "react";
 import { Select } from "antd";
 const { Option } = Select;
 
-const Form = (props) => {
+const Update = (props) => {
+    //console.log(props.category.name)
   return (
     <div className="fixed z-0 inset-x-0 top-14 bottom-0 bg-black bg-opacity-30 backdrop-blur-sm flex justify-center items-center overflow-y-scroll">
       <div className="p-2 rounded">
@@ -31,10 +32,11 @@ const Form = (props) => {
                     onChange={(value) => {
                       props.setCategory(value);
                     }}
+                    value={props.category}
                     className="text-fontxs sm:text-fontsm placeholder-gray-500 rounded-lg w-full py-2 focus:outline-none focus:border-indigo-400"
                   >
                     {props.categories?.map((item) => (
-                      <Option key={item.id} value={item?._id}>
+                      <Option key={item._id} value={item._id}>
                         {item?.name}
                       </Option>
                     ))}
@@ -114,10 +116,19 @@ const Form = (props) => {
                   />
                 </div>
                 <div className="flex flex-col mb-4">
-                  {props.photo && (
+                  {props.photo ? (
                     <div className="flex justify-center items-center">
                       <img
                         src={URL.createObjectURL(props.photo)}
+                        alt="product_photo"
+                        height={"200px"}
+                        className="w-28 h-28"
+                      />
+                    </div>
+                  ) : (
+                    <div className="flex justify-center items-center">
+                      <img
+                        src={`${process.env.REACT_APP_BACKEND_ROOT_URL}/api/product/product-photo/${props?.productId}`}
                         alt="product_photo"
                         height={"200px"}
                         className="w-28 h-28"
@@ -187,4 +198,4 @@ const Form = (props) => {
   );
 };
 
-export default Form;
+export default Update;
