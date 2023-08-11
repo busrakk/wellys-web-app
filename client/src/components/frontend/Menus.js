@@ -25,7 +25,41 @@ function PrevBtn({ className, style, onClick }) {
   );
 }
 
-const Menus = () => {
+const Menus = (props) => {
+
+  const renderTableData = () => {
+    let view = [];
+    props.products.map((item) => {
+      view.push(
+        <div className="md:px-4 px-10">
+          <div className="w-full max-w-sm overflow-hidden rounded-lg shadow-md">
+            <img
+              className="object-cover w-full h-80"
+              src={`${process.env.REACT_APP_BACKEND_ROOT_URL}/api/product/product-photo/${item._id}`}
+              alt={item.name}
+            />
+
+            <div className="py-5 text-center">
+              <div
+                className="block text-xl font-bold text-gray-800"
+                role="link"
+              >
+                {item.name}
+              </div>
+              <span className="text-sm text-gray-700">{item.price} $</span>
+            </div>
+          </div>
+        </div>
+      );
+      return view;
+    });
+    if (view.length === 0) {
+      return <div className="md:px-0 px-10">No data found!</div>;
+    } else {
+      return view;
+    }
+  };
+
   const settings = {
     dots: false,
     infinite: true,
@@ -68,82 +102,8 @@ const Menus = () => {
         className="md:-mx-2 flex justify-center items-center"
         {...settings}
       >
-        <div className="md:px-0 px-10">
-          <div className="w-full max-w-sm overflow-hidden rounded-lg shadow-md">
-            <img
-              className="object-cover w-full h-80"
-              src="https://picsum.photos/200/300"
-              alt="avatar"
-            />
-
-            <div className="py-5 text-center">
-              <div
-                className="block text-xl font-bold text-gray-800"
-                role="link"
-              >
-                name
-              </div>
-              <span className="text-sm text-gray-700">price</span>
-            </div>
-          </div>
-        </div>
-        <div className="md:px-0 px-10">
-          <div className="w-full max-w-sm overflow-hidden rounded-lg shadow-md">
-            <img
-              className="object-cover w-full h-80"
-              src="https://picsum.photos/200/300"
-              alt="avatar"
-            />
-
-            <div className="py-5 text-center">
-              <div
-                className="block text-xl font-bold text-gray-800"
-                role="link"
-              >
-                name
-              </div>
-              <span className="text-sm text-gray-700">price</span>
-            </div>
-          </div>
-        </div>
-        <div className="md:px-0 px-10">
-          <div className="w-full max-w-sm overflow-hidden rounded-lg shadow-md">
-            <img
-              className="object-cover w-full h-80"
-              src="https://picsum.photos/200/300"
-              alt="avatar"
-            />
-
-            <div className="py-5 text-center">
-              <div
-                className="block text-xl font-bold text-gray-800"
-                role="link"
-              >
-                name
-              </div>
-              <span className="text-sm text-gray-700">price</span>
-            </div>
-          </div>
-        </div>
-        <div className="md:px-0 px-10">
-          <div className="w-full max-w-sm overflow-hidden rounded-lg shadow-md">
-            <img
-              className="object-cover w-full h-80"
-              src="https://picsum.photos/200/300"
-              alt="avatar"
-            />
-
-            <div className="py-5 text-center">
-              <div
-                className="block text-xl font-bold text-gray-800"
-                role="link"
-              >
-                name
-              </div>
-              <span className="text-sm text-gray-700">price</span>
-            </div>
-          </div>
-        </div>
+        {props.isLoading && <div>Loading</div>}
+        {!props.isLoading && renderTableData()}
       </Slider>
     </div>
   );
