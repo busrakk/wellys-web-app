@@ -53,11 +53,13 @@ const Form = (props) => {
                     }}
                     className="text-fontxs sm:text-fontsm placeholder-gray-500 rounded-lg w-full py-2 focus:outline-none focus:border-indigo-400"
                   >
-                    {categories?.map((item) => (
-                      <Option key={item._id} value={item?._id}>
-                        {item?.name}
-                      </Option>
-                    ))}
+                    {categories?.map((item) =>
+                      item?.status === "1" ? (
+                        <Option key={item._id} value={item?._id}>
+                          {item?.name}
+                        </Option>
+                      ) : null
+                    )}
                   </Select>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 space-x-4">
