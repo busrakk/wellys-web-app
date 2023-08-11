@@ -71,7 +71,7 @@ const Category = () => {
     if (selectedCategory) {
       setSelectedCategoryId(categoryId);
       setName(selectedCategory.name);
-      setStatus(selectedCategory.status);
+      setStatus(selectedCategory.status === "1" ? "1" : "0");
       setShowUpdate(true);
     }
   };
