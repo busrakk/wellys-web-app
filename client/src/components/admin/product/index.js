@@ -105,8 +105,8 @@ const Product = () => {
         >
           <div>
             <img
-              className="object-cover w-full h-48 rounded-md"
-              src={item?.image}
+              className="object-cover w-full h-full rounded-md"
+              src={`${process.env.REACT_APP_BACKEND_ROOT_URL}/api/product/product-photo/${item._id}`}
               alt={item.name}
             />
 
@@ -157,7 +157,7 @@ const Product = () => {
   };
 
   return (
-    <div className="h-full ml-14 mt-20 mb-10 md:ml-64 fixed overflow-x:hidden overflow-y-scroll pb-24">
+    <div className="h-full ml-14 mt-20 mb-10 md:ml-64 fixed overflow-x:hidden overflow-y-scroll pb-24 w-4/5">
       <div className="mt-4 text-fontlg font-semibold flex justify-between md:mx-24 mx-10">
         <span>Yemekler</span>
         <button
