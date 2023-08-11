@@ -1,9 +1,28 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Select } from "antd";
+import toast from "react-hot-toast";
+import axios from "axios";
 const { Option } = Select;
 
 const Form = (props) => {
-  const {categories} = props;
+  const [categories, setCategories] = useState([]);
+  useEffect(() => {
+    getAllCategories();
+  }, []);
+  // get all category
+  const getAllCategories = async () => {
+    try {
+      const { data } = await axios.get(
+        `${process.env.REACT_APP_BACKEND_ROOT_URL}/api/category/get-category`
+      );
+      if (data.success) {
+        setCategories(data?.category);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("Something went wrong");
+    }
+  };
   return (
     <div className="fixed z-0 inset-x-0 top-14 bottom-0 bg-black bg-opacity-30 backdrop-blur-sm flex justify-center items-center overflow-y-scroll">
       <div className="p-2 rounded">

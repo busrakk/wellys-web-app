@@ -10,7 +10,6 @@ import Swal from "sweetalert2";
 const Product = () => {
   const [products, setProducts] = useState([]);
   const [selectedProductId, setSelectedProductId] = useState(null);
-  const [categories, setCategories] = useState([]);
   const [name, setName] = useState("");
   const [category, setCategory] = useState("");
   const [description, setDescription] = useState("");
@@ -23,27 +22,10 @@ const Product = () => {
   const [showUpdate, setShowUpdate] = useState(false);
 
   useEffect(() => {
-    getAllCategories();
     getAllProducts();
   }, []);
 
-  // get all category
-  const getAllCategories = async () => {
-    try {
-      const { data } = await axios.get(
-        `${process.env.REACT_APP_BACKEND_ROOT_URL}/api/category/get-category`
-      );
-      if (data.success) {
-        setIsLoading(false);
-        setCategories(data?.category);
-      }
-    } catch (error) {
-      console.log(error);
-      toast.error("Something went wrong");
-    }
-  };
-
-  // get all category
+  // get all product
   const getAllProducts = async () => {
     try {
       const { data } = await axios.get(
@@ -142,7 +124,6 @@ const Product = () => {
   const resetForm = () => {
     setName("");
     setStatus("");
-    setCategories("");
     setDescription("");
     setFeatured("");
     setPhoto("");
@@ -258,7 +239,6 @@ const Product = () => {
       {show && (
         <Form
           setShow={setShow}
-          categories={categories}
           setCategory={setCategory}
           photo={photo}
           setPhoto={setPhoto}
