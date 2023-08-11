@@ -6,13 +6,13 @@ import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 function NextBtn({ className, style, onClick }) {
   return (
     <button
-      className={`text-brand-color absolute top-1/2 -right-6 -translate-y-1/2`}
+      className={`text-brand-color absolute top-1/2 -right-16 -translate-y-1/2`}
       onClick={onClick}
     >
       <IoIosArrowForward size={28} />
     </button>
   );
-} 
+}
 
 function PrevBtn({ className, style, onClick }) {
   return (
@@ -68,10 +68,10 @@ const Menus = () => {
         className="md:-mx-2 flex justify-center items-center"
         {...settings}
       >
-        <div className="space-x-4">
-          <div className="w-full max-w-xs overflow-hidden rounded-lg shadow-lg">
+        <div className="md:px-0 px-10">
+          <div className="w-full max-w-sm overflow-hidden rounded-lg shadow-md">
             <img
-              className="object-cover w-full h-96"
+              className="object-cover w-full h-80"
               src="https://picsum.photos/200/300"
               alt="avatar"
             />
@@ -87,10 +87,10 @@ const Menus = () => {
             </div>
           </div>
         </div>
-        <div className="space-x-4">
-          <div className="w-full max-w-xs overflow-hidden bg-white rounded-lg shadow-lg">
+        <div className="md:px-0 px-10">
+          <div className="w-full max-w-sm overflow-hidden rounded-lg shadow-md">
             <img
-              className="object-cover w-full h-96"
+              className="object-cover w-full h-80"
               src="https://picsum.photos/200/300"
               alt="avatar"
             />
@@ -106,10 +106,10 @@ const Menus = () => {
             </div>
           </div>
         </div>
-        <div className="space-x-4">
-          <div className="w-full max-w-xs overflow-hidden bg-white rounded-lg shadow-lg">
+        <div className="md:px-0 px-10">
+          <div className="w-full max-w-sm overflow-hidden rounded-lg shadow-md">
             <img
-              className="object-cover w-full h-96"
+              className="object-cover w-full h-80"
               src="https://picsum.photos/200/300"
               alt="avatar"
             />
@@ -125,10 +125,10 @@ const Menus = () => {
             </div>
           </div>
         </div>
-        <div className="space-x-4">
-          <div className="w-full max-w-xs overflow-hidden bg-white rounded-lg shadow-lg">
+        <div className="md:px-0 px-10">
+          <div className="w-full max-w-sm overflow-hidden rounded-lg shadow-md">
             <img
-              className="object-cover w-full h-96"
+              className="object-cover w-full h-80"
               src="https://picsum.photos/200/300"
               alt="avatar"
             />
