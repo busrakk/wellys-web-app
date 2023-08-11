@@ -3,6 +3,7 @@ import { Select } from "antd";
 const { Option } = Select;
 
 const Form = (props) => {
+  const {categories} = props;
   return (
     <div className="fixed z-0 inset-x-0 top-14 bottom-0 bg-black bg-opacity-30 backdrop-blur-sm flex justify-center items-center overflow-y-scroll">
       <div className="p-2 rounded">
@@ -33,8 +34,8 @@ const Form = (props) => {
                     }}
                     className="text-fontxs sm:text-fontsm placeholder-gray-500 rounded-lg w-full py-2 focus:outline-none focus:border-indigo-400"
                   >
-                    {props.categories?.map((item) => (
-                      <Option key={item.id} value={item?._id}>
+                    {categories?.map((item) => (
+                      <Option key={item._id} value={item?._id}>
                         {item?.name}
                       </Option>
                     ))}

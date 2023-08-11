@@ -23,8 +23,8 @@ const Product = () => {
   const [showUpdate, setShowUpdate] = useState(false);
 
   useEffect(() => {
-    getAllProducts();
     getAllCategories();
+    getAllProducts();
   }, []);
 
   // get all category
@@ -281,9 +281,8 @@ const Product = () => {
       {showUpdate && (
         <Update
           setShow={setShowUpdate}
-          categories={categories}
-          setCategory={setCategory}
           category={category}
+          setCategory={setCategory}
           photo={photo}
           setPhoto={setPhoto}
           name={name}

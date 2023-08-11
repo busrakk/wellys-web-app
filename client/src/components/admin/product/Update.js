@@ -1,9 +1,29 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Select } from "antd";
+import toast from "react-hot-toast";
+import axios from "axios";
 const { Option } = Select;
 
 const Update = (props) => {
-    //console.log(props.category.name)
+
+  const [categories, setCategories] = useState([]);
+  useEffect(() => {
+    getAllCategories();
+  }, []);
+  // get all category
+  const getAllCategories = async () => {
+    try {
+      const { data } = await axios.get(
+        `${process.env.REACT_APP_BACKEND_ROOT_URL}/api/category/get-category`
+      );
+      if (data.success) {
+        setCategories(data?.category);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("Something went wrong");
+    }
+  };
   return (
     <div className="fixed z-0 inset-x-0 top-14 bottom-0 bg-black bg-opacity-30 backdrop-blur-sm flex justify-center items-center overflow-y-scroll">
       <div className="p-2 rounded">
@@ -35,7 +55,7 @@ const Update = (props) => {
                     value={props.category}
                     className="text-fontxs sm:text-fontsm placeholder-gray-500 rounded-lg w-full py-2 focus:outline-none focus:border-indigo-400"
                   >
-                    {props.categories?.map((item) => (
+                    {categories?.map((item) => (
                       <Option key={item._id} value={item._id}>
                         {item?.name}
                       </Option>
