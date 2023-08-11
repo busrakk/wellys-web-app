@@ -120,6 +120,7 @@ const Form = (props) => {
                         src={URL.createObjectURL(props.photo)}
                         alt="product_photo"
                         height={"200px"}
+                        className="w-28 h-28"
                       />
                     </div>
                   )}

@@ -105,7 +105,7 @@ const Product = () => {
         >
           <div>
             <img
-              className="object-cover w-full h-full rounded-md"
+              className="object-cover w-[190px] h-[190px] rounded-md"
               src={`${process.env.REACT_APP_BACKEND_ROOT_URL}/api/product/product-photo/${item._id}`}
               alt={item.name}
             />
