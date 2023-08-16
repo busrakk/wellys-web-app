@@ -28,7 +28,7 @@ const Menu = () => {
     }
   };
   return (
-    <div id="menu" className="mb-10 w-screen relative mt-8 bg-white">
+    <div id="menu" className="mb-10 w-screen relative mt-8 py-14 bg-white">
       <div className="text-[48px] sm:text-[56px] md:text-[72px] font-satisfy capitalize flex justify-center items-center mx-auto bg-white">
         Menu
       </div>

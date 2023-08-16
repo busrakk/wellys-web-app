@@ -44,7 +44,7 @@ const Login = () => {
         navigate(
           location.state || res?.data?.user?.role === 1
             ? "/admin/dashboard"
-            : "/user/dashboard"
+            : "/user/orders"
         );
       } else {
         toast.error(res.data.message);

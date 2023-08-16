@@ -10,8 +10,8 @@ import Category from "./components/admin/category";
 import Product from "./components/admin/product";
 import Users from "./components/admin/user";
 import AdminRoute from "./components/Routes/AdminRoute";
-import UserDashboard from "./layouts/user/UserDashboard";
 import UserRoute from "./components/Routes/UserRoute";
+import Order from "./components/user/order";
 
 function App() {
   return (
@@ -23,8 +23,8 @@ function App() {
           <Route path="" element={<Home />} />
         </Route>
         <Route path="/user/" element={<UserRoute />}>
-          <Route path="" element={<Navigate replace to="/user/dashboard" />} />
-          <Route path="dashboard" element={<UserDashboard />} />
+          <Route path="" element={<Navigate replace to="/user/orders" />} />
+          <Route path="orders" element={<Order />} />
         </Route>
         <Route path="/admin/" element={<AdminRoute />}>
           <Route path="" element={<Navigate replace to="/admin/dashboard" />} />

@@ -63,7 +63,7 @@ const Navbar = () => {
           ) : auth?.user?.role === 0 ? (
             <li className="md:hidden flex p-4">
               <Link
-                to="/user/dashboard"
+                to="/user/orders"
                 className="flex justify-center items-center gap-1"
               >
                 <BiUserCircle size={22} />
@@ -103,7 +103,7 @@ const Navbar = () => {
             </Link>
           ) : auth?.user?.role === 0 ? (
             <Link
-              to="/user/dashboard" // User dashboarda yönlendirme
+              to="/user/orders" // User dashboarda yönlendirme
               className="flex justify-center items-center gap-1 transition-all duration-200 ease-linear hover:scale-110"
             >
               <BiUserCircle size={22} />
