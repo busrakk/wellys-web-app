@@ -60,6 +60,16 @@ const Navbar = () => {
                 <span className="text-fontsm">{auth?.user?.name}</span>
               </Link>
             </li>
+          ) : auth?.user?.role === 0 ? (
+            <li className="md:hidden flex p-4">
+              <Link
+                to="/user/dashboard"
+                className="flex justify-center items-center gap-1"
+              >
+                <BiUserCircle size={22} />
+                <span className="text-fontsm">{auth?.user?.name}</span>
+              </Link>
+            </li>
           ) : (
             <li className="md:hidden flex p-4">
               <Link
@@ -89,6 +99,14 @@ const Navbar = () => {
               className="flex justify-center items-center gap-1 transition-all duration-200 ease-linear hover:scale-110"
             >
               <RiAdminLine size={22} />
+              <span className="text-fontsm">{auth?.user?.name}</span>
+            </Link>
+          ) : auth?.user?.role === 0 ? (
+            <Link
+              to="/user/dashboard" // User dashboarda yönlendirme
+              className="flex justify-center items-center gap-1 transition-all duration-200 ease-linear hover:scale-110"
+            >
+              <BiUserCircle size={22} />
               <span className="text-fontsm">{auth?.user?.name}</span>
             </Link>
           ) : (

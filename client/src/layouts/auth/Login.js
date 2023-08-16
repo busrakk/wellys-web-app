@@ -40,12 +40,12 @@ const Login = () => {
           token: res.data.token,
         });
         localStorage.setItem("auth", JSON.stringify(res.data));
-        navigate(location.state || "/admin/dashboard");
-        // navigate(
-        //   location.state || res?.data?.user?.role === 1
-        //     ? "/admin/dashboard"
-        //     : "/"
-        // );
+        // navigate(location.state || "/admin/dashboard");
+        navigate(
+          location.state || res?.data?.user?.role === 1
+            ? "/admin/dashboard"
+            : "/user/dashboard"
+        );
       } else {
         toast.error(res.data.message);
       }

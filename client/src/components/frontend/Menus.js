@@ -26,12 +26,11 @@ function PrevBtn({ className, style, onClick }) {
 }
 
 const Menus = (props) => {
-
   const renderTableData = () => {
     let view = [];
     props.products.map((item) => {
       view.push(
-        <div className="md:px-4 px-10">
+        <div key={item._id} className="md:px-4 px-10">
           <div className="w-full max-w-sm overflow-hidden rounded-lg shadow-md">
             <img
               className="object-cover w-full h-80"
