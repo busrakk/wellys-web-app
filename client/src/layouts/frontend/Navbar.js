@@ -7,6 +7,7 @@ import { FiMenu } from "react-icons/fi";
 import { AiOutlineClose } from "react-icons/ai";
 import { useAuth } from "../../context/auth";
 import { RiAdminLine } from "react-icons/ri";
+import Modal from "../../components/frontend/cart/Modal";
 
 const Navbar = () => {
   const location = useLocation();
@@ -22,6 +23,7 @@ const Navbar = () => {
   };
 
   const [open, setOpen] = useState(false);
+  const [open1, setOpen1] = useState(false);
   const [auth, setAuth] = useAuth();
 
   return (
@@ -101,7 +103,10 @@ const Navbar = () => {
               className="transition-all duration-200 ease-linear hover:scale-110"
             />
 
-            <Link to="/cart" className="flex justify-center items-center gap-1">
+            <button
+              className="flex justify-center items-center gap-1"
+              onClick={() => setOpen1(!open1)}
+            >
               <div className="relative">
                 <BiCartAlt
                   size={20}
@@ -110,8 +115,9 @@ const Navbar = () => {
                 <span className="absolute -top-2 -right-2 flex h-3 w-3 items-center justify-center rounded-full bg-red-500 p-2 text-fontxs text-white">
                   5
                 </span>
+                <Modal carts={5} open1={open1} setOpen1={setOpen1} />
               </div>
-            </Link>
+            </button>
           </div>
           {auth?.user?.role === 1 ? (
             <Link
