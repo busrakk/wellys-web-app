@@ -12,6 +12,7 @@ import Users from "./components/admin/user";
 import AdminRoute from "./components/Routes/AdminRoute";
 import UserRoute from "./components/Routes/UserRoute";
 import Order from "./components/user/order";
+import Cart from "./components/frontend/cart";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/" element={<Master />}>
           <Route path="" element={<Home />} />
+          <Route path="cart" element={<Cart />} />
         </Route>
         <Route path="/user/" element={<UserRoute />}>
           <Route path="" element={<Navigate replace to="/user/orders" />} />

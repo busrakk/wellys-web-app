@@ -2,13 +2,15 @@ import React, { useState } from "react";
 import "./index.css";
 import Logo from "../../components/elements/Logo";
 import { BiCartAlt, BiSearch, BiUserCircle } from "react-icons/bi";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { FiMenu } from "react-icons/fi";
 import { AiOutlineClose } from "react-icons/ai";
 import { useAuth } from "../../context/auth";
 import { RiAdminLine } from "react-icons/ri";
 
 const Navbar = () => {
+  const location = useLocation();
+
   const scrollTo = (id) => {
     let element = document.getElementById(id);
 
@@ -41,15 +43,25 @@ const Navbar = () => {
             open ? "top-2 opacity-100" : " md:opacity-100 opacity-0"
           }`}
         >
-          <li onClick={() => scrollTo("home")} className="menu-item">
-            Home
-          </li>
-          <li onClick={() => scrollTo("menu")} className="menu-item">
-            Menu
-          </li>
-          <li onClick={() => scrollTo("contact")} className="menu-item">
-            Contact
-          </li>
+          {location.pathname !== "/cart" ? (
+            <>
+              <li onClick={() => scrollTo("home")} className="menu-item">
+                Home
+              </li>
+              <li onClick={() => scrollTo("menu")} className="menu-item">
+                Menu
+              </li>
+              <li onClick={() => scrollTo("contact")} className="menu-item">
+                Contact
+              </li>
+            </>
+          ) : (
+            <>
+              <Link to="/" className="menu-item">
+                Home
+              </Link>
+            </>
+          )}
           {auth?.user?.role === 1 ? (
             <li className="md:hidden flex p-4">
               <Link
@@ -88,10 +100,18 @@ const Navbar = () => {
               size={20}
               className="transition-all duration-200 ease-linear hover:scale-110"
             />
-            <BiCartAlt
-              size={20}
-              className="transition-all duration-200 ease-linear hover:scale-110"
-            />
+
+            <Link to="/cart" className="flex justify-center items-center gap-1">
+              <div className="relative">
+                <BiCartAlt
+                  size={20}
+                  className="transition-all duration-200 ease-linear hover:scale-110"
+                />
+                <span className="absolute -top-2 -right-2 flex h-3 w-3 items-center justify-center rounded-full bg-red-500 p-2 text-fontxs text-white">
+                  5
+                </span>
+              </div>
+            </Link>
           </div>
           {auth?.user?.role === 1 ? (
             <Link
