@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import Login from "./layouts/auth/Login";
 import Register from "./layouts/auth/Register";
@@ -11,22 +11,25 @@ import Product from "./components/admin/product";
 import Users from "./components/admin/user";
 import AdminRoute from "./components/Routes/AdminRoute";
 import UserRoute from "./components/Routes/UserRoute";
-import Order from "./components/user/order";
 import Cart from "./components/frontend/cart";
+import { useSelector } from "react-redux";
 
 function App() {
+  const cart = useSelector((state) => state.cart);
+
+  useEffect(() => {
+    localStorage.setItem("cart", JSON.stringify(cart));
+  }, [cart]);
   return (
     <>
       <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
         <Route path="/" element={<Master />}>
           <Route path="" element={<Home />} />
-          <Route path="cart" element={<Cart />} />
+          <Route path="login" element={<Login />} />
+          <Route path="register" element={<Register />} />
         </Route>
         <Route path="/user/" element={<UserRoute />}>
-          <Route path="" element={<Navigate replace to="/user/orders" />} />
-          <Route path="orders" element={<Order />} />
+          <Route path="cart" element={<Cart />} />
         </Route>
         <Route path="/admin/" element={<AdminRoute />}>
           <Route path="" element={<Navigate replace to="/admin/dashboard" />} />

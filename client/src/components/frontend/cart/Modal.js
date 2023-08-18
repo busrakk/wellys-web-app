@@ -1,7 +1,18 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { deleteCart } from "../../../redux/cartSlice";
+import toast from "react-hot-toast";
 
-const Modal = ({ carts, open1, setOpen1 }) => {
+const Modal = ({ cartItems, open1, setOpen1 }) => {
+  const dispatch = useDispatch();
+  const cart = useSelector((state) => state.cart);
+
+  const handleDeleteItem = (item) => {
+    dispatch(deleteCart(item));
+    toast.success(`${item.name} successfully deleted`);
+  };
+
   return (
     <>
       {open1 && (
@@ -22,7 +33,7 @@ const Modal = ({ carts, open1, setOpen1 }) => {
                       <div className="flex-1 overflow-y-auto px-4 py-6 sm:px-6">
                         <div className="flex items-start justify-between">
                           <h2
-                            className="text-lg font-medium text-gray-900"
+                            className="text-fontlg font-medium text-gray-900"
                             id="slide-over-title"
                           >
                             My Cart
@@ -30,7 +41,8 @@ const Modal = ({ carts, open1, setOpen1 }) => {
                           <div className="ml-3 flex h-7 items-center">
                             <button
                               onClick={() => setOpen1(!open1)}
-                              className="-m-2 p-2 text-gray-400 hover:text-gray-500"
+                              className="-m-2 p-2 text-gray-400 hover:text-gray-900"
+                              aria-label="Close panel"
                             >
                               <span className="sr-only">Close panel</span>
                               <svg
@@ -57,15 +69,15 @@ const Modal = ({ carts, open1, setOpen1 }) => {
                               role="list"
                               className="-my-6 divide-y divide-gray-200"
                             >
-                              {/* {carts?.length > 0 ? (
+                              {cartItems?.length > 0 ? (
                                 <>
-                                  {carts.map((cart) => {
-                                    return ( */}
-                                      <li className="flex py-6">
+                                  {cartItems.map((item) => {
+                                    return (
+                                      <li key={item._id} className="flex py-6">
                                         <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
                                           <img
-                                            src="https://picsum.photos/200/300"
-                                            alt=""
+                                            src={`${process.env.REACT_APP_BACKEND_ROOT_URL}/api/product/product-photo/${item._id}`}
+                                            alt={item.name}
                                             className="h-full w-full object-cover object-center"
                                           />
                                         </div>
@@ -74,25 +86,34 @@ const Modal = ({ carts, open1, setOpen1 }) => {
                                           <div>
                                             <div className="flex justify-between text-base font-medium text-gray-900">
                                               <h3>
-                                                <Link to="#">name</Link>
+                                                <Link to="#">{item.name}</Link>
                                               </h3>
-                                              <p className="ml-4">$ 80</p>
+                                              <p className="ml-4">
+                                                $ {item.price}
+                                              </p>
                                             </div>
                                             <p className="mt-1 text-sm text-gray-500 flex justify-between text-base font-medium">
-                                              description
+                                              {item.description}
                                             </p>
                                           </div>
                                           <div className="flex flex-1 items-end justify-between text-sm">
-                                            <p className="text-gray-500">x 2</p>
+                                            <p className="text-gray-500">
+                                              x {item.quantity}
+                                            </p>
                                             <div className="flex">
-                                              <button className="font-medium text-indigo-600 hover:text-indigo-500">
-                                                Sil
+                                              <button
+                                                onClick={() =>
+                                                  handleDeleteItem(item)
+                                                }
+                                                className="font-medium text-red-600 hover:text-red-500"
+                                              >
+                                                Delete
                                               </button>
                                             </div>
                                           </div>
                                         </div>
                                       </li>
-                                    {/* );
+                                    );
                                   })}
                                 </>
                               ) : (
@@ -102,14 +123,14 @@ const Modal = ({ carts, open1, setOpen1 }) => {
                                       <div className="px-4 py-2 -mx-3">
                                         <div className="mx-3">
                                           <p className="text-base font-medium m-2 text-gray-800">
-                                            There are no foods in the cart.
+                                            There are no items in the cart.
                                           </p>
                                         </div>
                                       </div>
                                     </div>
                                   </div>
                                 </div>
-                              )} */}
+                              )}
                             </div>
                           </div>
                         </div>
@@ -118,19 +139,26 @@ const Modal = ({ carts, open1, setOpen1 }) => {
                       <div className="border-t border-gray-200 px-4 py-6 sm:px-6">
                         <div className="flex justify-between text-base font-medium text-gray-900">
                           <p>Total: </p>
-                          <p>$ 85</p>
+                          <p>$ {cart.total > 0 ? cart.total.toFixed(2) : 0}</p>
                         </div>
-                        {/* <p className="mt-0.5 text-sm text-gray-500">
-                    Shipping and taxes calculated at checkout.
-                  </p> */}
-                        <div className="mt-6">
-                          <Link
-                            to="/cart"
-                            className="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
-                          >
-                            Checkout
-                          </Link>
-                        </div>
+                        {cartItems.length > 0 ? (
+                          <div className="mt-6">
+                            <Link
+                              to="/user/cart"
+                              className="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
+                            >
+                              Checkout
+                            </Link>
+                          </div>
+                        ) : (
+                          <div className="mt-6">
+                            <div
+                              className="flex items-center justify-center rounded-md border border-transparent bg-gray-600 px-6 py-3 text-base font-medium text-white shadow-sm"
+                            >
+                              <button disabled>Checkout</button>
+                            </div>
+                          </div>
+                        )}
                         <div className="mt-6 flex justify-center text-center text-sm text-gray-500">
                           <p>
                             <Link

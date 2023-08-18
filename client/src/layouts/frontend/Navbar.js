@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./index.css";
 import Logo from "../../components/elements/Logo";
 import { BiCartAlt, BiSearch, BiUserCircle } from "react-icons/bi";
@@ -6,11 +6,23 @@ import { Link, useLocation } from "react-router-dom";
 import { FiMenu } from "react-icons/fi";
 import { AiOutlineClose } from "react-icons/ai";
 import { useAuth } from "../../context/auth";
-import { RiAdminLine } from "react-icons/ri";
 import Modal from "../../components/frontend/cart/Modal";
+import { useSelector } from "react-redux";
+
+import {
+  RiUserLine,
+  RiUserSettingsLine,
+  RiUserReceivedLine,
+} from "react-icons/ri";
+import { FaRegUserCircle } from "react-icons/fa";
+import toast from "react-hot-toast";
 
 const Navbar = () => {
   const location = useLocation();
+  const { cartItems } = useSelector((state) => state.cart);
+  const [backgroundClass, setBackgroundClass] = useState("white");
+  const [textColorClass, setTextColorClass] = useState("black");
+  const [hoverColorClass, setHoverColorClass] = useState("gray-100");
 
   const scrollTo = (id) => {
     let element = document.getElementById(id);
@@ -25,6 +37,28 @@ const Navbar = () => {
   const [open, setOpen] = useState(false);
   const [open1, setOpen1] = useState(false);
   const [auth, setAuth] = useAuth();
+
+  const handleLogout = () => {
+    setAuth({
+      ...auth,
+      user: null,
+      token: "",
+    });
+    localStorage.removeItem("auth");
+    toast.success("Logout Successfully");
+  };
+
+  useEffect(() => {
+    if (location.pathname === "/") {
+      setBackgroundClass("black");
+      setTextColorClass("white");
+      setHoverColorClass("gray-600");
+    } else {
+      setBackgroundClass("white");
+      setTextColorClass("black");
+      setHoverColorClass("gray-100");
+    }
+  }, [location]);
 
   return (
     <div className="bg-black opacity-92 text-white shadow-md w-full fixed top-0 left-0 z-50">
@@ -45,7 +79,7 @@ const Navbar = () => {
             open ? "top-2 opacity-100" : " md:opacity-100 opacity-0"
           }`}
         >
-          {location.pathname !== "/cart" ? (
+          {location.pathname === "/" ? (
             <>
               <li onClick={() => scrollTo("home")} className="menu-item">
                 Home
@@ -64,38 +98,14 @@ const Navbar = () => {
               </Link>
             </>
           )}
-          {auth?.user?.role === 1 ? (
-            <li className="md:hidden flex p-4">
-              <Link
-                to="/admin/dashboard"
-                className="flex justify-center items-center gap-1"
-              >
-                <RiAdminLine size={22} />
-                <span className="text-fontsm">{auth?.user?.name}</span>
-              </Link>
-            </li>
-          ) : auth?.user?.role === 0 ? (
-            <li className="md:hidden flex p-4">
-              <Link
-                to="/user/orders"
-                className="flex justify-center items-center gap-1"
-              >
-                <BiUserCircle size={22} />
-                <span className="text-fontsm">{auth?.user?.name}</span>
-              </Link>
-            </li>
-          ) : (
-            <li className="md:hidden flex p-4">
-              <Link
-                to="/login"
-                className="flex justify-center items-center gap-1"
-              >
-                <BiUserCircle size={22} />
-                <span className="text-fontsm">Log In</span>
-              </Link>
-            </li>
-          )}
+
+          {/* 
+
+          LOGIN VE CART EKLENECEK !!!!!!!!
+          
+          */}
         </ul>
+
         <div className="md:flex hidden justify-center items-center gap-8 ">
           <div className="flex justify-center items-center gap-2">
             <BiSearch
@@ -103,7 +113,7 @@ const Navbar = () => {
               className="transition-all duration-200 ease-linear hover:scale-110"
             />
 
-            <button
+            <div
               className="flex justify-center items-center gap-1"
               onClick={() => setOpen1(!open1)}
             >
@@ -112,37 +122,131 @@ const Navbar = () => {
                   size={20}
                   className="transition-all duration-200 ease-linear hover:scale-110"
                 />
-                <span className="absolute -top-2 -right-2 flex h-3 w-3 items-center justify-center rounded-full bg-red-500 p-2 text-fontxs text-white">
-                  5
-                </span>
-                <Modal carts={5} open1={open1} setOpen1={setOpen1} />
+                {cartItems?.length !== 0 && (
+                  <span className="absolute -top-2 -right-2 flex h-3 w-3 items-center justify-center rounded-full bg-red-500 p-2 text-fontxs text-white">
+                    {cartItems.length}
+                  </span>
+                )}
+                <Modal
+                  cartItems={cartItems}
+                  open1={open1}
+                  setOpen1={setOpen1}
+                />
               </div>
-            </button>
+            </div>
           </div>
-          {auth?.user?.role === 1 ? (
-            <Link
-              to="/admin/dashboard"
-              className="flex justify-center items-center gap-1 transition-all duration-200 ease-linear hover:scale-110"
+
+          {!auth?.token ? (
+            <div
+              onClick={() => setOpen(!open)}
+              className="flex justify-center cursor-pointer items-center gap-1"
             >
-              <RiAdminLine size={22} />
-              <span className="text-fontsm">{auth?.user?.name}</span>
-            </Link>
-          ) : auth?.user?.role === 0 ? (
-            <Link
-              to="/user/orders" // User dashboarda yönlendirme
-              className="flex justify-center items-center gap-1 transition-all duration-200 ease-linear hover:scale-110"
-            >
-              <BiUserCircle size={22} />
-              <span className="text-fontsm">{auth?.user?.name}</span>
-            </Link>
-          ) : (
-            <Link
-              to="/login"
-              className="flex justify-center items-center gap-1 transition-all duration-200 ease-linear hover:scale-110"
-            >
-              <BiUserCircle size={22} />
+              <div className="relative">
+                <BiUserCircle size={22} />
+                {open && (
+                  <div
+                    className={`bg-${backgroundClass} z-0 hover:z-50 p-2 w-52 shadow-lg absolute -left-28 top-10`}
+                  >
+                    <div className="space-x-4">
+                      <div
+                        onClick={() => setOpen(false)}
+                        className="text-sm cursor-pointer flex flex-col"
+                      >
+                        {auth?.user?.role !== 0 && auth?.user?.role !== 1 && (
+                          <>
+                            <Link
+                              to="/login"
+                              className={` text-${textColorClass} text-fontsm hover:text-${textColorClass} hover:bg-${hoverColorClass} p-2 rounded`}
+                            >
+                              <div className="flex hover:font-bold items-center space-x-4">
+                                {/* <RiUserLine /> */}
+                                <span>Login</span>
+                              </div>
+                            </Link>
+                            <Link
+                              to="/register"
+                              className={` text-${textColorClass} text-fontsm hover:text-${textColorClass} hover:bg-${hoverColorClass} p-2 rounded`}
+                            >
+                              <div className="flex hover:font-bold items-center space-x-4">
+                                {/* <RiUserSettingsLine /> */}
+                                <span>Register</span>
+                              </div>
+                            </Link>
+                          </>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
               <span className="text-fontsm">Log In</span>
-            </Link>
+            </div>
+          ) : (
+            <div
+              onClick={() => setOpen(!open)}
+              className="flex justify-center cursor-pointer items-center gap-1"
+            >
+              <div className="relative">
+                <FaRegUserCircle size={25} />
+                {open && (
+                  <div
+                    className={`bg-${backgroundClass} z-0 hover:z-50 p-2 w-52 shadow-lg absolute -left-28 top-10`}
+                  >
+                    <div className="space-x-4">
+                      <div
+                        onClick={() => setOpen(false)}
+                        className="text-sm cursor-pointer flex flex-col"
+                      >
+                        {auth?.user?.role === 1 && (
+                          <Link
+                            to={"/admin/dashboard"}
+                            className={` text-${textColorClass} text-fontsm hover:text-${textColorClass} hover:bg-${hoverColorClass} p-2 rounded`}
+                          >
+                            <div className="flex hover:font-bold items-center space-x-4">
+                              <RiUserLine />
+                              <span>Profile</span>
+                            </div>
+                          </Link>
+                        )}
+                        {auth?.user?.role === 0 && (
+                          <Link
+                            to={"/user/dashboard"}
+                            className={` text-${textColorClass} text-fontsm hover:text-${textColorClass} hover:bg-${hoverColorClass} p-2 rounded`}
+                          >
+                            <div className="flex hover:font-bold items-center space-x-4">
+                              <RiUserLine />
+                              <span>Profile</span>
+                            </div>
+                          </Link>
+                        )}
+                        <Link
+                          to="/#"
+                          className={` text-${textColorClass} text-fontsm hover:text-${textColorClass} hover:bg-${hoverColorClass} p-2 rounded`}
+                        >
+                          <div className="flex hover:font-bold items-center space-x-4">
+                            <RiUserSettingsLine />
+                            <span>Settings</span>
+                          </div>
+                        </Link>
+                        <Link
+                          to="#"
+                          className={` text-${textColorClass} text-fontsm hover:text-${textColorClass} hover:bg-${hoverColorClass} p-2 rounded`}
+                          onClick={handleLogout}
+                        >
+                          <div className="flex hover:font-bold items-center space-x-4">
+                            <RiUserReceivedLine />
+                            <span>Logout</span>
+                          </div>
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+              <span className="text-fontsm">
+                {auth?.user ? auth?.user?.name : "UNDEFIND"}
+              </span>
+            </div>
           )}
         </div>
       </div>

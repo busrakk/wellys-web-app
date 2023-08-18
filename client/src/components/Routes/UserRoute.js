@@ -3,7 +3,7 @@ import { useAuth } from "../../context/auth";
 import axios from "axios";
 import toast from "react-hot-toast";
 import Spinner from "../Spinner";
-import UserLayout from "../../layouts/user/UserLayout";
+import Master from "../../layouts/frontend/Master";
 
 export default function UserRoute() {
   const [ok, setOk] = useState(false);
@@ -22,12 +22,12 @@ export default function UserRoute() {
           toast.error("Unauthorized access! Please login");
         }
       } catch (error) {
-        //toast.error("Server error! Try again later");
-        toast.error("Unauthorized access! Please login");
+        toast.error("Server error! Try again later");
+        // toast.error("Unauthorized access! Please login");
         setOk(false);
       }
     };
     if (auth?.token) authCheck();
   }, [auth?.token]);
-  return ok ? <UserLayout /> : <Spinner path="" />;
+  return ok ? <Master /> : <Spinner path="login" />;
 }
