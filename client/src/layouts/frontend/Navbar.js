@@ -74,6 +74,24 @@ const Navbar = () => {
             <FiMenu size={20} className="cursor-pointer md:hidden" />
           )}
         </div>
+
+        <div
+          className="absolute right-16 top-6 cursor-pointer md:hidden"
+          onClick={() => setOpen1(!open1)}
+        >
+          <div className="relative">
+            <BiCartAlt
+              size={20}
+              className="transition-all duration-200 ease-linear hover:scale-110"
+            />
+            {cartItems?.length !== 0 && (
+              <span className="absolute -top-2 -right-2 flex h-3 w-3 items-center justify-center rounded-full bg-red-500 p-2 text-fontxs text-white">
+                {cartItems.length}
+              </span>
+            )}
+            <Modal cartItems={cartItems} open1={open1} setOpen1={setOpen1} />
+          </div>
+        </div>
         <ul
           className={`menu md:pb-0 pb-6 absolute md:static md:z-auto z-[-1] left-0 w-full md:w-auto md:pl-0 pl-9 transition-all duration-500 ease-in ${
             open ? "top-2 opacity-100" : " md:opacity-100 opacity-0"

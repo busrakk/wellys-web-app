@@ -23,10 +23,10 @@ function App() {
   return (
     <>
       <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
         <Route path="/" element={<Master />}>
           <Route path="" element={<Home />} />
-          <Route path="login" element={<Login />} />
-          <Route path="register" element={<Register />} />
         </Route>
         <Route path="/user/" element={<UserRoute />}>
           <Route path="cart" element={<Cart />} />
