@@ -16,14 +16,13 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    // phone: {
-    //   type: String,
-    //   required: true,
-    // },
-    // address: {
-    //   type: String,
-    //   required: true,
-    // },
+    phone: {
+      type: String,
+      required: true,
+    },
+    address: [
+      { type: mongoose.ObjectId, ref: "Address"},
+    ],
     role: {
       type: Number,
       default: 0,
