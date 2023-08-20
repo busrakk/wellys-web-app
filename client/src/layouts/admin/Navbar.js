@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../context/auth";
 import { HiOutlineLogout, HiOutlineSearch } from "react-icons/hi";
-import toast from "react-hot-toast";
+import { toast } from 'react-toastify';
 
 const Navbar = () => {
   const [auth, setAuth] = useAuth();

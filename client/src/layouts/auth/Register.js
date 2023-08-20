@@ -11,7 +11,7 @@ import AuthCarousel from "../../components/auth/AuthCarousel";
 import slider1 from "../../assets/images/slider1.png";
 import slider2 from "../../assets/images/slider2.png";
 import slider3 from "../../assets/images/slider3.png";
-import toast, { Toaster } from "react-hot-toast";
+import { toast } from 'react-toastify';
 import axios from "axios";
 
 const Register = () => {
@@ -46,7 +46,6 @@ const Register = () => {
 
   return (
     <div className="h-screen xl:mx-48">
-      <Toaster />
       <div className="flex justify-between h-full">
         <div className="xl:w-1/3 lg:w-2/5 md:w-1/2 md:flex hidden  h-full">
           <div className="w-full h-full flex items-center">

@@ -2,8 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteCart } from "../../../redux/cartSlice";
-import toast from "react-hot-toast";
-import Swal from "sweetalert2";
+import { toast } from 'react-toastify';
 import { useAuth } from "../../../context/auth";
 
 const Modal = ({ cartItems, open1, setOpen1 }) => {
@@ -15,23 +14,15 @@ const Modal = ({ cartItems, open1, setOpen1 }) => {
     dispatch(deleteCart(item));
     toast.success(`${item.name} successfully deleted`);
   };
-
+  
   const handleCheckout = () => {
     if (auth.token) {
       toast.success("You are redirected to the cart page.", {
-        duration: 3000,
+        autoClose: 3000,
       });
     } else {
-      Swal.fire({
-        title: "Login Required",
-        text: "You need to log in to proceed with the order.",
-        icon: "warning",
-        confirmButtonColor: "#3085d6",
-        confirmButtonText: "Log In",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          window.location.href = "/login";
-        }
+      toast.info("You need to log in to proceed with the order.", {
+        autoClose: 3000,
       });
     }
   };
@@ -167,7 +158,7 @@ const Modal = ({ cartItems, open1, setOpen1 }) => {
                         {cartItems.length > 0 ? (
                           <div className="mt-6">
                             <Link
-                              to={auth?.token && "/user/cart"}
+                              to={auth?.token ? "/user/cart" : "/login"}
                               onClick={handleCheckout}
                               className="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
                             >

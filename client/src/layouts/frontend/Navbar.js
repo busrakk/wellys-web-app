@@ -15,7 +15,7 @@ import {
   RiUserReceivedLine,
 } from "react-icons/ri";
 import { FaRegUserCircle } from "react-icons/fa";
-import toast from "react-hot-toast";
+import { toast } from 'react-toastify';
 
 const Navbar = () => {
   const location = useLocation();

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Menus from "../Menus";
 import axios from "axios";
-import toast from "react-hot-toast";
+import { toast } from 'react-toastify';
 //import { useAuth } from "../../../context/auth";
 
 const Menu = () => {

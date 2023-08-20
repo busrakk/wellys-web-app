@@ -3,7 +3,7 @@ import { RiDeleteBin5Line } from "react-icons/ri";
 import { useDispatch } from "react-redux";
 import { deleteCart, increase, decrease } from "../../../redux/cartSlice";
 import Swal from "sweetalert2";
-import toast from "react-hot-toast";
+import { toast } from 'react-toastify';
 
 const Item = ({ item }) => {
   const dispatch = useDispatch();

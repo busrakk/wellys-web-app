@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Select } from "antd";
-import toast from "react-hot-toast";
+import { toast } from 'react-toastify';
 import axios from "axios";
 const { Option } = Select;
 

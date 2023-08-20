@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { BiEditAlt } from "react-icons/bi";
-import toast from "react-hot-toast";
+import { toast } from 'react-toastify';
 import axios from "axios";
 import Swal from "sweetalert2";
 import { MdDeleteOutline, MdAddCircleOutline } from "react-icons/md";

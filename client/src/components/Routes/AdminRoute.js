@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useAuth } from "../../context/auth";
 import MasterLayout from "../../layouts/admin/MasterLayout";
 import axios from "axios";
-import toast from "react-hot-toast";
+import { toast } from 'react-toastify';
 import Spinner from "../Spinner";
 
 export default function AdminRoute() {

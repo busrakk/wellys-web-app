@@ -6,7 +6,7 @@ import { reset } from "../../../redux/cartSlice";
 import { HiOutlineShoppingBag } from "react-icons/hi";
 import Swal from "sweetalert2";
 import { useAuth } from "../../../context/auth";
-import toast from "react-hot-toast";
+import { toast } from 'react-toastify';
 
 const Cart = () => {
   const [auth, setAuth] = useAuth();

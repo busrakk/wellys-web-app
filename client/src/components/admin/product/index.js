@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { AiOutlineStar } from "react-icons/ai";
 import { MdAddCircleOutline } from "react-icons/md";
-import toast from "react-hot-toast";
+import { toast } from 'react-toastify';
 import axios from "axios";
 import Form from "./Form";
 import Update from "./Update";

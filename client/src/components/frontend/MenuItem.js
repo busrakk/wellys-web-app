@@ -2,7 +2,7 @@ import React from "react";
 import { BiCartAlt } from "react-icons/bi";
 import { addProduct } from "../../redux/cartSlice";
 import { useDispatch } from "react-redux";
-import toast from "react-hot-toast";
+import { toast } from 'react-toastify';
 
 const MenuItem = ({ item }) => {
   const dispatch = useDispatch();

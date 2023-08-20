@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { BiEditAlt } from "react-icons/bi";
 import { MdDeleteOutline } from "react-icons/md";
-import toast from "react-hot-toast";
+import { toast } from 'react-toastify';
 import axios from "axios";
 import Swal from "sweetalert2";
 import Form from "./Form";
