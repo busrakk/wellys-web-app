@@ -10,10 +10,9 @@ import AuthCarousel from "../../components/auth/AuthCarousel";
 import slider1 from "../../assets/images/slider1.png";
 import slider2 from "../../assets/images/slider2.png";
 import slider3 from "../../assets/images/slider3.png";
-import { toast } from 'react-toastify';
+import { toast } from "react-toastify";
 import axios from "axios";
 import { useAuth } from "../../context/auth";
-
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -42,10 +41,21 @@ const Login = () => {
         });
         localStorage.setItem("auth", JSON.stringify(res.data));
         // navigate(location.state || "/admin/dashboard");
-        navigate(
-          location.state ||
-            (res?.data?.user?.role === 1 ? "/admin/dashboard" : "/")
-        );
+        if (
+          res?.data?.user?.role === 0 &&
+          (res?.data?.user?.address === null &&
+            res?.data?.user?.phone === null)
+        ) {
+          toast.info(
+            "Profile info is missing. Please fill in your information."
+          );
+          navigate("/user/profile");
+        } else {
+          navigate(
+            location.state ||
+              (res?.data?.user?.role === 1 ? "/admin/dashboard" : "/")
+          );
+        }
       } else {
         toast.error(res.data.message);
       }

@@ -105,7 +105,7 @@ const Users = () => {
     let view = [];
     users.map((item) => {
       view.push(
-        <tr key={item.id} className="hover:bg-gray-50">
+        <tr key={item._id} className="hover:bg-gray-50">
           <td className="px-6 py-4">{item.name}</td>
           {/* <td className="px-6 py-4 hidden md:block">
             {item.status === 1 ? (

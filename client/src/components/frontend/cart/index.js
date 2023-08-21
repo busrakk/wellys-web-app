@@ -1,12 +1,12 @@
 import React, { useEffect } from "react";
 import Item from "./Item";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { reset } from "../../../redux/cartSlice";
 import { HiOutlineShoppingBag } from "react-icons/hi";
 import Swal from "sweetalert2";
 import { useAuth } from "../../../context/auth";
-import { toast } from 'react-toastify';
+import { toast } from "react-toastify";
 
 const Cart = () => {
   const [auth, setAuth] = useAuth();
@@ -22,6 +22,8 @@ const Cart = () => {
       navigate("/login");
     }
   }, [auth, cart, navigate]);
+
+  // console.log(auth.user.address || "N/A")
 
   const handleClearCart = () => {
     Swal.fire({
@@ -83,8 +85,46 @@ const Cart = () => {
               {/* <!-- Sub total --> */}
 
               <div className="flex-col h-full md:w-2/5">
-                <div className="justify-between mb-6 rounded-lg bg-white p-6 shadow-md">
-                  deneme
+                <div className="mb-4 rounded-lg bg-white p-6 shadow-md">
+                  <div className="mb-2">
+                    <label
+                      htmlFor="address"
+                      className="font-bold flex items-center"
+                    >
+                      Address:
+                    </label>
+                    <textarea
+                      id="address"
+                      type="address"
+                      name="address"
+                      className="text-fontxs sm:text-fontsm placeholder-gray-500 pl-2 py-1 rounded-lg border border-gray-200 w-full focus:outline-none focus:border-indigo-400 h-24 resize-y"
+                      placeholder="Address"
+                      disabled
+                      value={auth.user.address || "Null"}
+                    />
+                  </div>
+                  <div className="mb-2">
+                    <label
+                      htmlFor="phone"
+                      className="font-bold flex items-center"
+                    >
+                      Mobile:
+                    </label>
+                    <input
+                      id="phone"
+                      type="phone"
+                      name="phone"
+                      className="text-fontxs sm:text-fontsm placeholder-gray-500 pl-2 py-1 rounded-lg border border-gray-200 w-full focus:outline-none focus:border-indigo-400"
+                      placeholder="Phone"
+                      disabled
+                      value={auth.user.phone || "Null"}
+                    />
+                  </div>
+                  <Link to="/user/profile">
+                    <button className="mt-2 w-full rounded-md bg-indigo-500 py-1.5 font-medium text-indigo-50 hover:bg-indigo-600">
+                      Update
+                    </button>
+                  </Link>
                 </div>
 
                 <div className="justify-between mb-6 rounded-lg bg-white p-6 shadow-md">

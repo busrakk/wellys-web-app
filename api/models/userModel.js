@@ -18,11 +18,12 @@ const userSchema = new mongoose.Schema(
     },
     phone: {
       type: String,
-      required: true,
+      //required: true,
     },
-    address: [
-      { type: mongoose.ObjectId, ref: "Address"},
-    ],
+    address: {
+      type: String,
+      //required: true,
+    },
     role: {
       type: Number,
       default: 0,

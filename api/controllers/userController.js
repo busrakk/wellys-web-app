@@ -21,6 +21,25 @@ export const userController = async (req, res) => {
   }
 };
 
+export const getUserProfile = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const user = await userModel.findById(userId);
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    res.status(200).json({
+      success: true,
+      user,
+    });
+  } catch (error) {
+    console.log(error);
+    res
+      .status(500)
+      .json({ error: "An error occurred while fetching user profile" });
+  }
+};
+
 //update user
 export const updateUserController = async (req, res) => {
   try {
@@ -66,22 +85,12 @@ export const updateProfileController = async (req, res) => {
   try {
     const { name, password, address, phone } = req.body;
     const user = await userModel.findById(req.user._id);
-    //password
+    
     if (password && password.length < 6) {
-      return res.json({ error: "Password is required and 6 character long" });
+      return res.status(400).json({ error: "Password is required and must be at least 6 characters long" });
     }
+    
     const hashedPassword = password ? await hashPassword(password) : undefined;
-
-    let updatedAddress = user.address;
-    if (address) {
-      if (!user.address) {
-        const newAddress = new addressModel(address);
-        await newAddress.save();
-        updatedAddress = newAddress._id;
-      } else {
-        updatedAddress = await addressModel.insertMany(address);
-      }
-    }
 
     const updatedUser = await userModel.findByIdAndUpdate(
       req.user._id,
@@ -89,21 +98,22 @@ export const updateProfileController = async (req, res) => {
         name: name || user.name,
         password: hashedPassword || user.password,
         phone: phone || user.phone,
-        address: updatedAddress,
+        address: address || user.address,
       },
       { new: true }
     );
-    res.status(200).send({
+    
+    res.status(200).json({
       success: true,
       message: "Profile Updated Successfully",
       updatedUser,
     });
   } catch (error) {
-    console.log(error);
-    res.status(400).send({
+    console.error(error);
+    res.status(500).json({
       success: false,
-      message: "Error While Update profile",
-      error,
+      message: "An error occurred while updating the profile",
+      error: error.message,
     });
   }
 };
@@ -113,20 +123,22 @@ export const getAddressesByUser = async (req, res) => {
   try {
     const userId = req.user._id;
     const user = await userModel.findById(userId).populate("address");
-    
+
     if (!user) {
       return res.status(404).json({ error: "User not found" });
     }
-    
+
     const addresses = user.address;
-    res.status(200).json({ 
+    res.status(200).json({
       success: true,
       message: "Address Listed SUccessfully",
-      addresses 
+      addresses,
     });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ error: "An error occurred while fetching addresses" });
+    res
+      .status(500)
+      .json({ error: "An error occurred while fetching addresses" });
   }
 };
 
@@ -146,9 +158,9 @@ export const deleteAddressByUser = async (req, res) => {
 
     await addressModel.findByIdAndDelete(addressIdToDelete);
 
-    res.status(200).json({ 
+    res.status(200).json({
       success: true,
-      message: "Address deleted successfully" 
+      message: "Address deleted successfully",
     });
   } catch (error) {
     console.log(error);
@@ -179,10 +191,10 @@ export const addAddressToUser = async (req, res) => {
     await newAddress.save();
     await user.save();
 
-    res.status(201).json({ 
+    res.status(201).json({
       success: true,
       message: "Address added successfully",
-      address: newAddress 
+      address: newAddress,
     });
   } catch (error) {
     console.log(error);

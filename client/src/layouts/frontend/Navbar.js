@@ -228,7 +228,7 @@ const Navbar = () => {
                         )}
                         {auth?.user?.role === 0 && (
                           <Link
-                            to={"/user/dashboard"}
+                            to={"/user/profile"}
                             className={` text-${textColorClass} text-fontsm hover:text-${textColorClass} hover:bg-${hoverColorClass} p-2 rounded`}
                           >
                             <div className="flex hover:font-bold items-center space-x-4">

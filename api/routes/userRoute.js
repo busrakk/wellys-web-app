@@ -7,7 +7,8 @@ import {
   updateProfileController,
   getAddressesByUser,
   deleteAddressByUser,
-  addAddressToUser
+  addAddressToUser,
+  getUserProfile
 } from "./../controllers/userController.js";
 
 const router = express.Router();
@@ -23,7 +24,7 @@ router.put("/update-user/:id", requireSignIn, isAdmin, updateUserController);
 router.delete("/delete-user/:id", requireSignIn, isAdmin, deleteUserController);
 
 //update profile
-router.put("/profile", requireSignIn, updateProfileController);
+router.put("/update-profile", requireSignIn, updateProfileController);
 
 // get address by user
 router.get("/addresses", requireSignIn, getAddressesByUser);
@@ -33,5 +34,8 @@ router.delete("/address/:addressId", requireSignIn, deleteAddressByUser);
 
 // create address by user
 router.post("/add-address", requireSignIn, addAddressToUser);
+
+//update profile
+router.get("/profile", requireSignIn, getUserProfile);
 
 export default router;
