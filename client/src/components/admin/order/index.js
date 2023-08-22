@@ -6,13 +6,16 @@ import { useAuth } from "../../../context/auth";
 import moment from "moment";
 import { AiOutlineEye } from "react-icons/ai";
 import Item from "./Item";
+import Buyer from "./Buyer";
 
 const AdminOrder = () => {
   const [auth, setAuth] = useAuth();
   const [orders, setOrders] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [show, setShow] = useState(false);
+  const [showBuyer, setShowBuyer] = useState(false);
   const [selectedProducts, setSelectedProducts] = useState([]);
+  const [selectedBuyer, setSelectedBuyer] = useState({});
   const [status, setStatus] = useState(["Not Process", "Preparing", "Ready"]);
   const navigate = useNavigate();
 
@@ -44,6 +47,11 @@ const AdminOrder = () => {
     setShow(true);
   };
 
+  const handleBuyer = (buyer) => {
+    setSelectedBuyer(buyer);
+    setShowBuyer(true);
+  };
+
   const handleChange = async (orderId, value) => {
     try {
       const { data } = await axios.put(
@@ -64,17 +72,17 @@ const AdminOrder = () => {
     let view = [];
     orders?.map((item, i) => {
       view.push(
-        <tr key={item._id} className="hover:bg-gray-50">
+        <tr key={item._id}>
           <td className="px-6 py-4">{i + 1}</td>
           <td>
             <select
               onChange={(event) => handleChange(item._id, event.target.value)}
               className={
                 item?.status === "Ready"
-                  ? "bg-green-50 px-2 py-1 text-xs font-semibold text-green-600"
+                  ? "bg-green-50 px-2 py-1 text-xs cursor-pointer font-semibold text-green-600"
                   : item?.status === "Preparing"
-                  ? "bg-yellow-50 px-2 py-1 text-xs font-semibold text-yellow-600"
-                  : "bg-red-50 px-2 py-1 text-xs font-semibold text-red-600"
+                  ? "bg-yellow-50 px-2 py-1 text-xs cursor-pointer font-semibold text-yellow-600"
+                  : "bg-red-50 px-2 py-1 text-xs cursor-pointer font-semibold text-red-600"
               }
               defaultValue={item?.status}
             >
@@ -108,13 +116,19 @@ const AdminOrder = () => {
               ))}
             </Select>
           </td> */}
-          <td className="px-6 py-4">{item?.buyer?.name}</td>
+          {/* <td className="px-6 py-4">{item?.buyer?.name}</td> */}
+          <td className="px-6 py-4">
+            <button
+              onClick={() => handleBuyer(item?.buyer)}
+              className="bg-blue-50 px-2 py-1 text-xs font-semibold text-blue-600"
+            >{item?.buyer?.name}</button>
+          </td>
           <td className="px-6 py-4">{moment(item?.createdAt).fromNow()}</td>
           <td className="px-6 py-4">{item?.payment} $</td>
           <td className="px-6 py-4">
             <AiOutlineEye
               onClick={() => handleProducts(item?.products)}
-              className="h-6 w-6 hover:text-blue-600"
+              className="h-6 w-6 hover:text-blue-600 cursor-pointer"
             />
           </td>
         </tr>
@@ -134,6 +148,7 @@ const AdminOrder = () => {
     }
   };
 
+
   return (
     <div className="h-full ml-14 mt-20 mb-10 md:ml-64 fixed overflow-x:hidden overflow-y-scroll w-4/5 pb-24">
       <div className="mt-4 text-fontlg font-semibold flex justify-between md:mx-40 mx-10">
@@ -141,6 +156,7 @@ const AdminOrder = () => {
       </div>
 
       {show && <Item selectedProducts={selectedProducts} setShow={setShow} />}
+      {showBuyer && <Buyer selectedBuyer={selectedBuyer} setShowBuyer={setShowBuyer} />}
 
       <div className="flex justify-center">
         <div className="overflow-hidden rounded-lg border border-gray-200 shadow-md m-5 w-3/4">
