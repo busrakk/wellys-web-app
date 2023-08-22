@@ -7,12 +7,13 @@ import moment from "moment";
 import { AiOutlineEye } from "react-icons/ai";
 import Item from "./Item";
 
-const Order = () => {
+const AdminOrder = () => {
   const [auth, setAuth] = useAuth();
   const [orders, setOrders] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [show, setShow] = useState(false);
   const [selectedProducts, setSelectedProducts] = useState([]);
+  const [status, setStatus] = useState(["Not Process", "Preparing", "Ready"]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -26,7 +27,7 @@ const Order = () => {
   const getAllOrders = async () => {
     try {
       const { data } = await axios.get(
-        `${process.env.REACT_APP_BACKEND_ROOT_URL}/api/order/orders`
+        `${process.env.REACT_APP_BACKEND_ROOT_URL}/api/order/all-orders`
       );
       if (data.success) {
         setIsLoading(false);
@@ -43,30 +44,70 @@ const Order = () => {
     setShow(true);
   };
 
+  const handleChange = async (orderId, value) => {
+    try {
+      const { data } = await axios.put(
+        `${process.env.REACT_APP_BACKEND_ROOT_URL}/api/order/order-status/${orderId}`,
+        {
+          status: value,
+        }
+      );
+      toast.success("Order Status updated successfully");
+      getAllOrders();
+    } catch (error) {
+      console.log(error);
+      toast.error("Something went wrong");
+    }
+  };
+
   const renderTable = () => {
     let view = [];
     orders?.map((item, i) => {
       view.push(
         <tr key={item._id} className="hover:bg-gray-50">
           <td className="px-6 py-4">{i + 1}</td>
-          <td className="px-6 py-4 hidden md:block">
-            {item.status === "Ready" ? (
-              <span className="inline-flex items-center gap-1 rounded-full bg-green-50 px-2 py-1 text-xs font-semibold text-green-600">
-                <span className="h-1.5 w-1.5 rounded-full bg-green-600"></span>
-                {item?.status}
-              </span>
-            ) : item.status === "Preparing" ? (
-              <span className="inline-flex items-center gap-1 rounded-full bg-yellow-50 px-2 py-1 text-xs font-semibold text-yellow-600">
-                <span className="h-1.5 w-1.5 rounded-full bg-yellow-600"></span>
-                {item?.status}
-              </span>
-            ) : (
-              <span className="inline-flex items-center gap-1 rounded-full bg-red-50 px-2 py-1 text-xs font-semibold text-red-600">
-                <span className="h-1.5 w-1.5 rounded-full bg-red-600"></span>
-                {item?.status}
-              </span>
-            )}
+          <td>
+            <select
+              onChange={(event) => handleChange(item._id, event.target.value)}
+              className={
+                item?.status === "Ready"
+                  ? "bg-green-50 px-2 py-1 text-xs font-semibold text-green-600"
+                  : item?.status === "Preparing"
+                  ? "bg-yellow-50 px-2 py-1 text-xs font-semibold text-yellow-600"
+                  : "bg-red-50 px-2 py-1 text-xs font-semibold text-red-600"
+              }
+              defaultValue={item?.status}
+            >
+              {status.map((s, i) => (
+                <option
+                  key={i}
+                  value={s}
+                  className={
+                    s === "Ready"
+                      ? "bg-green-50 px-2 py-1 text-xs font-semibold text-green-600"
+                      : s === "Preparing"
+                      ? "bg-yellow-50 px-2 py-1 text-xs font-semibold text-yellow-600"
+                      : "bg-red-50 px-2 py-1 text-xs font-semibold text-red-600"
+                  }
+                >
+                  {s}
+                </option>
+              ))}
+            </select>
           </td>
+          {/* <td className="px-6 py-4 hidden md:block">
+            <Select
+              bordered={false}
+              onChange={(value) => handleChange(item._id, value)}
+              defaultValue={item?.status}
+            >
+              {status.map((s, i) => (
+                <Option key={i} value={s}>
+                  {s}
+                </Option>
+              ))}
+            </Select>
+          </td> */}
           <td className="px-6 py-4">{item?.buyer?.name}</td>
           <td className="px-6 py-4">{moment(item?.createdAt).fromNow()}</td>
           <td className="px-6 py-4">{item?.payment} $</td>
@@ -152,4 +193,4 @@ const Order = () => {
   );
 };
 
-export default Order;
+export default AdminOrder;

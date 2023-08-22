@@ -12,8 +12,10 @@ import Users from "./components/admin/user";
 import AdminRoute from "./components/Routes/AdminRoute";
 import UserRoute from "./components/Routes/UserRoute";
 import Cart from "./components/frontend/cart";
+import Order from "./components/user/order"
 import { useSelector } from "react-redux";
 import Profile from "./components/user/profile";
+import AdminOrder from "./components/admin/order";
 
 function App() {
   const cart = useSelector((state) => state.cart);
@@ -32,6 +34,7 @@ function App() {
         <Route path="/user/" element={<UserRoute />}>
           <Route path="cart" element={<Cart />} />
           <Route path="profile" element={<Profile />} />
+          <Route path="order" element={<Order />} />
         </Route>
         <Route path="/admin/" element={<AdminRoute />}>
           <Route path="" element={<Navigate replace to="/admin/dashboard" />} />
@@ -39,6 +42,7 @@ function App() {
           <Route path="category" element={<Category />} />
           <Route path="product" element={<Product />} />
           <Route path="users" element={<Users />} />
+          <Route path="order" element={<AdminOrder />} />
         </Route>
         <Route path="*" element={<Page404 />} />
       </Routes>

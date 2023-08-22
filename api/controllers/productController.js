@@ -38,21 +38,23 @@ export const getFeaturedProductController = async (req, res) => {
       .select("-photo")
       .limit(12)
       .sort({ createdAt: -1 });
-    res.status(200).send({
+
+    res.status(200).json({
       success: true,
-      counTotal: products.length,
+      countTotal: products.length,
       message: "All featured products listed successfully",
       products,
     });
   } catch (error) {
-    console.log(error);
-    res.status(500).send({
+    console.error(error);
+    res.status(500).json({
       success: false,
-      message: "Erorr in getting products",
+      message: "Error in getting featured products",
       error: error.message,
     });
   }
 };
+
 
 // get single product
 export const getSingleProductController = async (req, res) => {

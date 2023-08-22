@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Item from "./Item";
 import { useNavigate, Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -7,8 +7,10 @@ import { HiOutlineShoppingBag } from "react-icons/hi";
 import Swal from "sweetalert2";
 import { useAuth } from "../../../context/auth";
 import { toast } from "react-toastify";
+import axios from "axios";
 
 const Cart = () => {
+  const [loading, setLoading] = useState(false);
   const [auth, setAuth] = useAuth();
   const cart = useSelector((state) => state.cart);
   const dispatch = useDispatch();
@@ -24,7 +26,7 @@ const Cart = () => {
   }, [auth, cart, navigate]);
 
   // console.log(auth.user.address || "N/A")
-
+  console.log(cart.cartItems)
   const handleClearCart = () => {
     Swal.fire({
       title: "Are you sure?",
@@ -41,6 +43,39 @@ const Cart = () => {
       }
     });
   };
+
+  const handleOrderNow = async () => {
+    try {
+      if(!auth?.user?.address){
+        toast.error("Please enter phone.");
+      }else if(!auth?.user?.address){
+        toast.error("Please enter address.");
+      }else{
+        setLoading(true)
+      const {data} = await axios.post(`${process.env.REACT_APP_BACKEND_ROOT_URL}/api/order/create`, {
+        cart: cart.cartItems
+      });
+
+      // console.log(cart)
+      if (data.ok) {
+        localStorage.removeItem("cart");
+        dispatch(reset());
+        navigate("/user/order");
+        toast.success("Order successfully created!");
+      }
+      }
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+      toast.error("An error occurred while creating the order.");
+    }
+  };
+  
+  
+  
+  
+
+  // console.log(auth.user.address)
 
   if (cart.cartItems.length === 0) {
     return (
@@ -149,7 +184,7 @@ const Cart = () => {
                       </p>
                     </div>
                   </div>
-                  <button className="mt-6 w-full rounded-md bg-blue-500 py-1.5 font-medium text-blue-50 hover:bg-blue-600">
+                  <button onClick={handleOrderNow} className="mt-6 w-full rounded-md bg-blue-500 py-1.5 font-medium text-blue-50 hover:bg-blue-600">
                     Order Now
                   </button>
                   <button

@@ -18,7 +18,7 @@ const Menu = () => {
       const { data } = await axios.get(
         `${process.env.REACT_APP_BACKEND_ROOT_URL}/api/product/product-featured`
       );
-      if (data?.success) {
+      if (data.success) {
         setIsLoading(false);
         setProducts(data?.products);
       }
