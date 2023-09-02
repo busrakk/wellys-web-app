@@ -15,7 +15,7 @@ import {
   RiUserReceivedLine,
 } from "react-icons/ri";
 import { FaRegUserCircle } from "react-icons/fa";
-import { toast } from 'react-toastify';
+import { toast } from "react-toastify";
 
 const Navbar = () => {
   const location = useLocation();
@@ -117,11 +117,38 @@ const Navbar = () => {
             </>
           )}
 
-          {/* 
-
-          LOGIN VE CART EKLENECEK !!!!!!!!
-          
-          */}
+          {!auth?.token ? (
+            <>
+              {auth?.user?.role !== 0 && auth?.user?.role !== 1 && (
+                <Link to="/login" className="menu-item md:hidden flex">
+                  Login
+                </Link>
+              )}
+            </>
+          ) : (
+            <>
+              {auth?.user?.role === 1 && (
+                <Link
+                  to={"/admin/dashboard"}
+                  className="menu-item md:hidden flex"
+                >
+                  Profile
+                </Link>
+              )}
+              {auth?.user?.role === 0 && (
+                <Link to={"/user/profile"} className="menu-item md:hidden flex">
+                  Profile
+                </Link>
+              )}
+              <Link
+                to="#"
+                onClick={handleLogout}
+                className="menu-item md:hidden flex"
+              >
+                Logout
+              </Link>
+            </>
+          )}
         </ul>
 
         <div className="md:flex hidden justify-center items-center gap-8 ">
